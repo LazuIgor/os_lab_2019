@@ -1,0 +1,18 @@
+gcc -o swap ./src/swap/main.c ./src/swap/swap.c
+./swap
+
+gcc -o revert_string ./src/revert_string/main.c ./src/revert_string/revert_string.c
+./revert_string abcdeff
+
+gcc -c ./src/revert_string/main.c -o bin/main.o #Create object file for main
+
+gcc -c ./src/revert_string/revert_string.c -o bin/static/revert_string.o #Create object file for static library
+gcc -c -fPIC ./src/revert_string/revert_string.c -o bin/shared/revert_string.o #Create object file with position independent code for shared library
+
+ar rcs ./bin/static/librevert.a bin/static/revert_string.o #Create static file
+gcc ./bin/main.o -Lbin/static -lrevert -o bin/statically-linked #Link statically
+./bin/statically-linked qwerasdf
+
+gcc -shared ./bin/shared/revert_string.o -o bin/shared/librevert.so #Create archive for shared library
+gcc -o tests ./src/tests/tests.c -L./bin/shared -lrevert -lcunit -I./src/revert_string
+./tests
