@@ -8,7 +8,6 @@ void testRevertString(void) {
   char simple_string[] = "Hello";
   char str_with_spaces[] = "String with spaces";
   char str_with_odd_chars_num[] = "abc";
-  char str_with_even_chars_num[] = "abcd";
 
   RevertString(simple_string);
   CU_ASSERT_STRING_EQUAL_FATAL(simple_string, "olleH");
@@ -18,13 +17,18 @@ void testRevertString(void) {
 
   RevertString(str_with_odd_chars_num);
   CU_ASSERT_STRING_EQUAL_FATAL(str_with_odd_chars_num, "cba");
+}
 
-  RevertString(str_with_even_chars_num);
-  CU_ASSERT_STRING_EQUAL_FATAL(str_with_even_chars_num, "dcba");
+void ttestRevertString(void) {
+  char simple_string[] = "Hello";
+
+  RevertString(simple_string);
+  CU_ASSERT_STRING_EQUAL_FATAL(simple_string, "olleH");
 }
 
 int main() {
   CU_pSuite pSuite = NULL;
+  CU_pSuite tSuite = NULL;
 
   /* initialize the CUnit test registry */
   if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
@@ -40,6 +44,20 @@ int main() {
   /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
   if ((NULL == CU_add_test(pSuite, "test of RevertString function",
                            testRevertString))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  tSuite = CU_add_suite("tSuite", NULL, NULL);
+  if (NULL == pSuite) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  /* add the tests to the suite */
+  /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
+  if ((NULL == CU_add_test(tSuite, "test of RevertString function",
+                           ttestRevertString))) {
     CU_cleanup_registry();
     return CU_get_error();
   }

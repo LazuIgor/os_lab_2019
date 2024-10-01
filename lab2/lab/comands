@@ -14,5 +14,8 @@ gcc ./bin/main.o -Lbin/static -lrevert -o bin/statically-linked #Link statically
 ./bin/statically-linked qwerasdf
 
 gcc -shared ./bin/shared/revert_string.o -o bin/shared/librevert.so #Create archive for shared library
+gcc bin/main.o -Lbin/shared -lrevert -o bin/shared-linked
+export LD_LIBRARY_PATH=$(pwd)/bin/shared
+
 gcc -o tests ./src/tests/tests.c -L./bin/shared -lrevert -lcunit -I./src/revert_string
 ./tests
