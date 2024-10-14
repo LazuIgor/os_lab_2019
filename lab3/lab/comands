@@ -1,0 +1,8 @@
+1.
+gcc -o sequential_min_max src/sequential_min_max.c src/find_min_max.c src/utils.c
+./sequential_min_max 1334 100000
+
+2/3.
+gcc -o parallel_min_max src/parallel_min_max.c src/find_min_max.c src/utils.c
+./parallel_min_max --seed 1234 --array_size 100000 --pnum 4
+./parallel_min_max --seed 1234 --array_size 100000 --pnum 4 -f
