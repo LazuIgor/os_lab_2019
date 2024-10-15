@@ -9,7 +9,7 @@ int main() {
         perror("fork failed");
         exit(EXIT_FAILURE);
     } else if (pid == 0) { //Обработка дочернего процесса
-        char *args[] = {"./sequential_min_max", "1334", "10000",NULL};
+        char *args[] = {"./sequential_min_max", "1334", "10000", NULL};
         execvp(args[0], args);
         perror("execvp failed");
         exit(EXIT_FAILURE);
