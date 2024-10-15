@@ -104,6 +104,7 @@ int main(int argc, char **argv) {
   gettimeofday(&start_time, NULL);
 
   int pipefd[2];
+  // Объявление и инициализация канала
   if (!with_files) {
     if (pipe(pipefd) == -1) {
       perror("pipe");
@@ -111,6 +112,7 @@ int main(int argc, char **argv) {
     }
   }
 
+  //Цикл создания дочерних процессов
   for (int i = 0; i < pnum; i++) {
     pid_t child_pid = fork();
     if (child_pid >= 0) {
@@ -144,6 +146,7 @@ int main(int argc, char **argv) {
     }
   }
 
+  // Родительский процесс ожидает завершения всех дочерних процессов с помощью функции wait.
   while (active_child_processes > 0) {
     // your code here
     int status;
@@ -157,6 +160,7 @@ int main(int argc, char **argv) {
   min_max.min = INT_MAX;
   min_max.max = INT_MIN;
 
+  // Цикл сбора результатов
   for (int i = 0; i < pnum; i++) {
     struct MinMax min_and_max;
 
