@@ -4,22 +4,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main() {
-    pid_t pid = fork();
 
-    if (pid < 0) {
-        perror("fork failed");
-        exit(1);
-    } else if (pid == 0) {
-        printf("Дочерний процесс: PID = %d\n", getpid());
-        while (1){
-            sleep(1); 
-        }
+int main()
+{
+    pid_t child_pid;
+
+    // Создаем дочерний процесс
+    child_pid = fork();
+
+    if (child_pid > 0) {
+        // Родительский процесс
+        printf("Родительский процесс (PID: %d) создал дочерний процесс (PID: %d)\n", getpid(), child_pid);
+        printf("Родительский процесс спит 20 секунд...\n");
+
+        sleep(40);  // Родительский процесс спит 20 секунд
+
+        printf("Родительский процесс завершается.\n");
+    } else if (child_pid == 0) {
+        // Дочерний процесс
+        printf("Дочерний процесс (PID: %d) завершается.\n", getpid());
+        exit(0);  // Дочерний процесс завершается
     } else {
-        printf("Родительский процесс: PID = %d\n", getpid());
-        sleep(2); 
-        exit(0);
-        printf("Родительский процесс завершился.\n");
+        // Ошибка при создании дочернего процесса
+        perror("fork");
+        return 1;
     }
 
     return 0;
